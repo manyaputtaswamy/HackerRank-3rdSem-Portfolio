@@ -60,7 +60,7 @@ HackerRank Profile: https://www.hackerrank.com/profile/manyaputtaswamy
 
 ## HackerRank Badge
 
-HackerRank badge screenshot will be added here.
+![HackerRank Badge](./screenshots/hackerrank-badge.png)
 
 ## Learning Outcome
 
