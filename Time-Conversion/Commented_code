@@ -1,0 +1,66 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+/*
+ * Complete the 'timeConversion' function below.
+ *
+ * The function is expected to return a STRING.
+ * The function accepts STRING s as parameter.
+ */
+
+string timeConversion(string s) {
+
+    // Extract the hour from the time string
+    int hour = stoi(s.substr(0, 2));
+
+    // Check if the time is in AM
+    if (s[8] == 'A') {
+
+        // Convert 12 AM to 00
+        if (hour == 12) {
+            s[0] = '0';
+            s[1] = '0';
+        }
+    }
+
+    // Otherwise, the time is in PM
+    else {
+
+        // Convert PM hours except 12 PM
+        if (hour != 12) {
+            hour += 12;
+
+            // Update the hour in the string
+            s[0] = char('0' + hour / 10);
+            s[1] = char('0' + hour % 10);
+        }
+    }
+
+    // Remove AM or PM from the string
+    s.erase(8, 2);
+
+    // Return the converted 24-hour time
+    return s;
+}
+
+int main()
+{
+    // Open the output file provided by HackerRank
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    // Read the input time
+    string s;
+    getline(cin, s);
+
+    // Convert the time to 24-hour format
+    string result = timeConversion(s);
+
+    // Print the result
+    fout << result << "\n";
+
+    // Close the output file
+    fout.close();
+
+    return 0;
+}
