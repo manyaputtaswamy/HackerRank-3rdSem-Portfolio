@@ -1,0 +1,161 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'dynamicArray' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. 2D_INTEGER_ARRAY queries
+ */
+
+vector<int> dynamicArray(int n, vector<vector<int>> queries) {
+
+    // Create n empty sequences
+    vector<vector<int>> seqList(n);
+
+    // Store the last answer
+    int lastAnswer = 0;
+
+    // Store the answers for type 2 queries
+    vector<int> result;
+
+    // Process each query
+    for (int i = 0; i < queries.size(); i++) {
+
+        int type = queries[i][0];
+        int x = queries[i][1];
+        int y = queries[i][2];
+
+        // Find the sequence using the required index formula
+        int index = (x ^ lastAnswer) % n;
+
+        // Type 1 query: append y to the selected sequence
+        if (type == 1) {
+            seqList[index].push_back(y);
+        }
+
+        // Type 2 query: find the required element
+        else if (type == 2) {
+
+            // Find the position using modulo
+            int position = y % seqList[index].size();
+
+            // Update lastAnswer
+            lastAnswer = seqList[index][position];
+
+            // Store the answer
+            result.push_back(lastAnswer);
+        }
+    }
+
+    // Return all answers from type 2 queries
+    return result;
+}
+
+int main()
+{
+    // Open the output file provided by HackerRank
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    // Read n and q
+    string first_multiple_input_temp;
+    getline(cin, first_multiple_input_temp);
+
+    // Split the input values
+    vector<string> first_multiple_input = split(rtrim(first_multiple_input_temp));
+
+    int n = stoi(first_multiple_input[0]);
+
+    int q = stoi(first_multiple_input[1]);
+
+    // Create the queries array
+    vector<vector<int>> queries(q);
+
+    // Read all queries
+    for (int i = 0; i < q; i++) {
+        queries[i].resize(3);
+
+        string queries_row_temp_temp;
+        getline(cin, queries_row_temp_temp);
+
+        // Split the query into separate values
+        vector<string> queries_row_temp = split(rtrim(queries_row_temp_temp));
+
+        for (int j = 0; j < 3; j++) {
+            int queries_row_item = stoi(queries_row_temp[j]);
+
+            queries[i][j] = queries_row_item;
+        }
+    }
+
+    // Call the dynamicArray function
+    vector<int> result = dynamicArray(n, queries);
+
+    // Print all results
+    for (size_t i = 0; i < result.size(); i++) {
+        fout << result[i];
+
+        // Print each answer on a new line
+        if (i != result.size() - 1) {
+            fout << "\n";
+        }
+    }
+
+    fout << "\n";
+
+    // Close the output file
+    fout.close();
+
+    return 0;
+}
+
+// Remove leading spaces from a string
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+// Remove trailing spaces from a string
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+// Split a string into separate values
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    // Find spaces and separate the values
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    // Add the last value
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
