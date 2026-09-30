@@ -1,0 +1,137 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+vector<string> split(const string &);
+
+/*
+ * Complete the 'compareTriplets' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts following parameters:
+ *  1. INTEGER_ARRAY a
+ *  2. INTEGER_ARRAY b
+ */
+
+vector<int> compareTriplets(vector<int> a, vector<int> b) {
+    // Store the scores of Alice and Bob
+    int alice = 0;
+    int bob = 0;
+
+    // Compare the three elements of Alice and Bob
+    for (int i = 0; i < 3; i++) {
+
+        // Alice gets one point if her score is greater
+        if (a[i] > b[i])
+            alice++;
+
+        // Bob gets one point if his score is greater
+        else if (a[i] < b[i])
+            bob++;
+    }
+
+    // Return Alice's score followed by Bob's score
+    return {alice, bob};
+}
+
+int main()
+{
+    // Open the output file provided by HackerRank
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    // Read Alice's scores
+    string a_temp_temp;
+    getline(cin, a_temp_temp);
+
+    // Split the input into separate values
+    vector<string> a_temp = split(rtrim(a_temp_temp));
+
+    // Store Alice's three scores
+    vector<int> a(3);
+
+    for (int i = 0; i < 3; i++) {
+        int a_item = stoi(a_temp[i]);
+        a[i] = a_item;
+    }
+
+    // Read Bob's scores
+    string b_temp_temp;
+    getline(cin, b_temp_temp);
+
+    // Split the input into separate values
+    vector<string> b_temp = split(rtrim(b_temp_temp));
+
+    // Store Bob's three scores
+    vector<int> b(3);
+
+    for (int i = 0; i < 3; i++) {
+        int b_item = stoi(b_temp[i]);
+        b[i] = b_item;
+    }
+
+    // Call the function to compare the scores
+    vector<int> result = compareTriplets(a, b);
+
+    // Print the result
+    for (size_t i = 0; i < result.size(); i++) {
+        fout << result[i];
+
+        // Add a space between the two scores
+        if (i != result.size() - 1) {
+            fout << " ";
+        }
+    }
+
+    fout << "\n";
+
+    // Close the output file
+    fout.close();
+
+    return 0;
+}
+
+// Remove leading spaces from a string
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+// Remove trailing spaces from a string
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
+
+// Split a string into separate words
+vector<string> split(const string &str) {
+    vector<string> tokens;
+
+    string::size_type start = 0;
+    string::size_type end = 0;
+
+    // Find spaces and separate the values
+    while ((end = str.find(" ", start)) != string::npos) {
+        tokens.push_back(str.substr(start, end - start));
+
+        start = end + 1;
+    }
+
+    // Add the last value
+    tokens.push_back(str.substr(start));
+
+    return tokens;
+}
