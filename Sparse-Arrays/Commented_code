@@ -1,0 +1,124 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+string ltrim(const string &);
+string rtrim(const string &);
+
+/*
+ * Complete the 'matchingStrings' function below.
+ *
+ * The function is expected to return an INTEGER_ARRAY.
+ * The function accepts following parameters:
+ *  1. STRING_ARRAY stringList
+ *  2. STRING_ARRAY queries
+ */
+
+vector<int> matchingStrings(vector<string> stringList, vector<string> queries) {
+
+    // Store the frequency of each string
+    vector<int> result;
+
+    // Check each query
+    for (int i = 0; i < queries.size(); i++) {
+
+        // Count how many times the query appears
+        int count = 0;
+
+        for (int j = 0; j < stringList.size(); j++) {
+
+            // Compare the query with each string
+            if (queries[i] == stringList[j]) {
+                count++;
+            }
+        }
+
+        // Store the count for the current query
+        result.push_back(count);
+    }
+
+    // Return all query counts
+    return result;
+}
+
+int main()
+{
+    // Open the output file provided by HackerRank
+    ofstream fout(getenv("OUTPUT_PATH"));
+
+    // Read the number of strings
+    string stringList_count_temp;
+    getline(cin, stringList_count_temp);
+
+    int stringList_count = stoi(ltrim(rtrim(stringList_count_temp)));
+
+    // Store the strings
+    vector<string> stringList(stringList_count);
+
+    for (int i = 0; i < stringList_count; i++) {
+        string stringList_item;
+        getline(cin, stringList_item);
+
+        stringList[i] = stringList_item;
+    }
+
+    // Read the number of queries
+    string queries_count_temp;
+    getline(cin, queries_count_temp);
+
+    int queries_count = stoi(ltrim(rtrim(queries_count_temp)));
+
+    // Store the queries
+    vector<string> queries(queries_count);
+
+    for (int i = 0; i < queries_count; i++) {
+        string queries_item;
+        getline(cin, queries_item);
+
+        queries[i] = queries_item;
+    }
+
+    // Call the matchingStrings function
+    vector<int> res = matchingStrings(stringList, queries);
+
+    // Print the results
+    for (size_t i = 0; i < res.size(); i++) {
+        fout << res[i];
+
+        // Print each result on a new line
+        if (i != res.size() - 1) {
+            fout << "\n";
+        }
+    }
+
+    fout << "\n";
+
+    // Close the output file
+    fout.close();
+
+    return 0;
+}
+
+// Remove leading spaces from a string
+string ltrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        s.begin(),
+        find_if(s.begin(), s.end(), not1(ptr_fun<int, int>(isspace)))
+    );
+
+    return s;
+}
+
+// Remove trailing spaces from a string
+string rtrim(const string &str) {
+    string s(str);
+
+    s.erase(
+        find_if(s.rbegin(), s.rend(), not1(ptr_fun<int, int>(isspace))).base(),
+        s.end()
+    );
+
+    return s;
+}
